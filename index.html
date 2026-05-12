@@ -523,6 +523,32 @@ box-shadow: 8px 0 15px rgba(0,0,0,0.15);
   font-size: 18px;
   font-weight: bold;
 }
+
+/* LOADING SPINNER */
+
+.loader {
+  width: 45px;
+  height: 45px;
+
+  border: 5px solid #EAF6FF;
+  border-top: 5px solid #4A90E2;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+
+  margin: 40px auto;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
   </style>
 </head>
 <body>
@@ -616,9 +642,9 @@ box-shadow: 8px 0 15px rgba(0,0,0,0.15);
   </div>
 <!-- OPEN MENU BUTTON -->
 
-<button id="openMenuBtn">
+<!--<button id="openMenuBtn">
   ☰ Menu
-</button>
+</button>-->
 
 <!-- DARK OVERLAY -->
 
@@ -664,11 +690,6 @@ box-shadow: 8px 0 15px rgba(0,0,0,0.15);
   <div class="leaderboard-header">
 
     <h2>🏆 Leaderboard</h2>
-
-  </div>
-
-  <!-- MODE TABS -->
-
   <div class="leaderboard-tabs">
 
     <button
@@ -684,10 +705,21 @@ box-shadow: 8px 0 15px rgba(0,0,0,0.15);
     >
       📖 Words
     </button>
-
   </div>
 
+
+<div id="leaderboardList"></div>
+
+
+  <!-- MODE TABS -->
+
+
+
+  </div>
+  <!--loader-->
+  <div id="leaderboardLoading" class="loader"></div>
   <!-- SCORES -->
+  
 
   <div id="leaderboardList"></div>
 
@@ -817,6 +849,9 @@ const sideMenu =
 
 const overlay =
   document.getElementById("overlay");
+  
+  const leaderboardLoading =
+  document.getElementById("leaderboardLoading");
 
 // TOGGLE MENU
 
@@ -1212,6 +1247,13 @@ async function getScores() {
 
 async function fetchLeaderboard() {
 
+ // SHOW LOADER
+  leaderboardLoading.style.display = "block";
+
+  // HIDE SCORES
+  leaderboardList.style.display = "none";
+
+
   try {
 
     const response = await fetch(
@@ -1228,6 +1270,14 @@ async function fetchLeaderboard() {
       "Leaderboard Fetch Error:",
       error
     );
+  }
+  finally {
+
+    // HIDE LOADER
+    leaderboardLoading.style.display = "none";
+
+    // SHOW SCORES
+    leaderboardList.style.display = "block";
   }
 }
 
