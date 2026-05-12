@@ -654,7 +654,7 @@ async function loadWordsFromSheet() {
             
         try {
         	await fetch(
-            	"https://script.google.com/macros/s/AKfycbyioa-gtihFmtkdJ0Y5X3FKTdEEWuTdX_p2bMY4E1Z7LveU5a9VAcCQrjlfn_TsCtmz/exec",
+            	"https://script.google.com/macros/s/AKfycbwYfd1wcpn-JRWpKAI5lbuEv2-vxD2BwJN7QMmmKoP_ck39JAMR-TAVRRr71cXHT-Wv/exec",
                 {
                   method: "POST",
                   body: JSON.stringify(data)
@@ -670,6 +670,30 @@ async function loadWordsFromSheet() {
 }
 
 
+//get scores
+async function getScores() {
+
+  try {
+
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbwYfd1wcpn-JRWpKAI5lbuEv2-vxD2BwJN7QMmmKoP_ck39JAMR-TAVRRr71cXHT-Wv/exec"
+    );
+
+    const scores =
+      await response.json();
+
+    console.log(scores);
+
+  } catch (error) {
+
+    console.error(
+      "Error getting scores:",
+      error
+    );
+  }
+}
+
+getScores()
 loadWordsFromSheet()
 
 </script>
