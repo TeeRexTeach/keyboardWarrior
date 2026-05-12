@@ -1,335 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Rush</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Comic Sans MS', 'Poppins', sans-serif;
-      background: #EAF6FF;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-.game-container {
-  background: white;
-  width: min(90vw, 700px);
-  padding: clamp(20px, 4vw, 40px);
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-    h1 {
-      margin-top: 0;
-      color: #4A90E2;
-      font-size: 36px;
-    }
-
-    .subtitle {
-      color: #666;
-      margin-bottom: 20px;
-    }
-
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      background: #FFF8DC;
-      padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .word-display {
-  background: #F9F9F9;
-  border: 3px dashed #A0D8EF;
-  border-radius: 20px;
-  padding: 20px 10px;
-  font-size: clamp(20px, 6vw, 64px);
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-input {
-  display: block;              /* makes centering work properly */
-  margin: 0 auto 20px auto;    /* centers horizontally */
-  width: min(90%, 500px);
-
-  padding: 15px;
-  font-size: clamp(16px, 2vw, 24px);
-
-  border: 2px solid #A0D8EF;
-  border-radius: 15px;
-  outline: none;
-
-  text-align: center;          /* text inside also centered */
-  box-sizing: border-box;
-}
-
-    input:focus {
-      border-color: #4A90E2;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-   button {
-  padding: clamp(10px, 2vw, 18px) clamp(20px, 4vw, 36px);
-  font-size: clamp(14px, 2vw, 20px);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-    .start-btn {
-      background: #7ED957;
-      color: white;
-    }
-
-    .restart-btn {
-      background: #FFB347;
-      color: white;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    .message {
-      min-height: 30px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #4A90E2;
-    }
-    
-    .keyboard-toggle {
-  margin-bottom: 15px;
-}
-
-.toggle-btn {
-  background: #4A90E2;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.toggle-btn:hover {
-  transform: scale(1.05);
-}
-.keyboard {
-  display: none;
-  margin-bottom: 20px;
-  width: 100%;
-  overflow-x: auto;
-}
-
-.keyboard-row {
-  display: flex;
-  justify-content: center;
-  gap: clamp(4px, 1vw, 10px);
-  margin-bottom: 8px;
-  flex-wrap: nowrap;
-}
-
-.key {
-  width: clamp(32px, 5vw, 55px);
-  height: clamp(32px, 5vw, 55px);
-  min-width: 32px;
-  min-height: 32px;
-  background: #f0f0f0;
-  border: 2px solid #A0D8EF;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: clamp(14px, 2vw, 20px);
-  transition: 0.2s;
-  flex-shrink: 0;
-}
-
-.key.active {
-  background: #4A90E2;
-  color: white;
-  transform: scale(1.08);
-}
-
-.key.wrong {
-  background: #FF6B6B;
-  color: white;
-  transform: scale(1.08);
-}
-
-.mode-select {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.mode-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background: #ddd;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.mode-btn.active {
-  background: #4A90E2;
-  color: white;
-  
-  .end-btn {
-  background: #FF6B6B;
-  color: white;
-}
-}
-
-.correct-letter {
-  color: #4A90E2;
-  font-weight: bold;
-}
-
-@media (max-width: 600px) {
-  .stats {
-    flex-direction: column;
-    gap: 10px;
-    font-size: 18px;
-  }
-
-  .buttons {
-    flex-direction: column;
-  }
-
-  .keyboard-row {
-    gap: 4px;
-  }
-
-  .key {
-    width: 35px;
-    height: 35px;
-    font-size: 14px;
-  }
-}
-  </style>
-</head>
-<body>
-
-  <div class="game-container">
-    <h1>🌈 Word Rush 🌈</h1>
-    <p class="subtitle">Type the word as fast as you can!</p>
-
-    <div class="stats">
-      <div>⭐ Score: <span id="score">0</span></div>
-      <div>⏰ Time: <span id="time">60</span>s</div>
-    </div>
-
-    <div class="word-display" id="wordDisplay">
-      Ready?
-    </div>
-
-    <input
-      type="text"
-      id="wordInput"
-      placeholder="Type the word here..."
-      autocomplete="off"
-      spellcheck="false"
-      autocorrect="off"
-      inputmode="latin"
-      style="ime-mode: disabled; display: none"
-    >
-    <div class="keyboard-toggle">
-  <button id="toggleKeyboardBtn" class="toggle-btn">
-    ⌨️ Show Keyboard
-  </button>
-</div>
-
-<div class="keyboard" id="keyboard">
-  <div class="keyboard-row">
-    <div class="key" data-key="q">Q</div>
-    <div class="key" data-key="w">W</div>
-    <div class="key" data-key="e">E</div>
-    <div class="key" data-key="r">R</div>
-    <div class="key" data-key="t">T</div>
-    <div class="key" data-key="y">Y</div>
-    <div class="key" data-key="u">U</div>
-    <div class="key" data-key="i">I</div>
-    <div class="key" data-key="o">O</div>
-    <div class="key" data-key="p">P</div>
-  </div>
-
-  <div class="keyboard-row">
-    <div class="key" data-key="a">A</div>
-    <div class="key" data-key="s">S</div>
-    <div class="key" data-key="d">D</div>
-    <div class="key" data-key="f">F</div>
-    <div class="key" data-key="g">G</div>
-    <div class="key" data-key="h">H</div>
-    <div class="key" data-key="j">J</div>
-    <div class="key" data-key="k">K</div>
-    <div class="key" data-key="l">L</div>
-  </div>
-
-  <div class="keyboard-row">
-    <div class="key" data-key="z">Z</div>
-    <div class="key" data-key="x">X</div>
-    <div class="key" data-key="c">C</div>
-    <div class="key" data-key="v">V</div>
-    <div class="key" data-key="b">B</div>
-    <div class="key" data-key="n">N</div>
-    <div class="key" data-key="m">M</div>
-  </div>
-</div>
-
-<div class="mode-select">
-  <button class="mode-btn active" onclick="setMode('alphabet')">🔤 Alphabets</button>
-  <button class="mode-btn" onclick="setMode('words')">📖 Words</button>
-</div>
-
-<div class="buttons">
-  <button class="start-btn" onclick="startGame()">🟢 Start Game</button>
-
-  <button
-    class="end-btn"
-    onclick="forceEndGame()"
-    style="display: none;"
-  >
-    🛑 End Game
-  </button>
-</div>
-
-    <div class="message" id="message">
-      🎉 Great job! Keep going!
-    </div>
-  </div>
-
-  <script>
   const correctSound = new Audio(
   "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
 );
 const alphabetList = [
   "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"
 ];
+let allScores = [];
+
+
+// leadearboard stuff
+
+const leaderboardBtn =
+  document.getElementById("leaderboardBtn");
+
+const leaderboardPanel =
+  document.getElementById("leaderboardPanel");
+
+const leaderboardOverlay =
+  document.getElementById("leaderboardOverlay");
+
+const leaderboardList =
+  document.getElementById("leaderboardList");
+
+// ===== CURRENT MODE =====
+
+let leaderboardMode = "alphabet";
+
+// ===== TOGGLE PANEL =====
+
+leaderboardBtn.addEventListener("click", () => {
+
+  leaderboardPanel.classList.toggle("open");
+
+  leaderboardOverlay.classList.toggle("open");
+
+  leaderboardBtn.classList.toggle("open");
+
+  fetchLeaderboard();
+
+});
+
+// ===== CLOSE =====
+
+
+leaderboardOverlay.addEventListener("click", () => {
+
+  leaderboardPanel.classList.remove("open");
+
+  leaderboardOverlay.classList.remove("open");
+
+  leaderboardBtn.classList.remove("open");
+
+});
+
+// ===== SWITCH MODE =====
+
+function switchLeaderboardMode(mode) {
+
+  leaderboardMode = mode;
+
+  document
+    .querySelectorAll(".leaderboard-tab")
+    .forEach(tab => {
+      tab.classList.remove("active");
+    });
+
+  if (mode === "alphabet") {
+
+    document
+      .querySelectorAll(".leaderboard-tab")[0]
+      .classList.add("active");
+
+  } else {
+
+    document
+      .querySelectorAll(".leaderboard-tab")[1]
+      .classList.add("active");
+  }
+
+  fetchLeaderboard();
+}
+
+// ===== DISPLAY =====
+
+// UPDATE displayLeaderboard()
+
+function displayLeaderboard(players) {
+
+  leaderboardList.innerHTML = "";
+
+  players
+    .slice(0, 10)
+    .forEach((player, index) => {
+
+      leaderboardList.innerHTML += `
+
+        <div class="leaderboard-entry">
+
+          <span>
+            ${index + 1}. ${player.name}
+          </span>
+
+          <span>
+            ⭐ ${player.score}
+          </span>
+
+        </div>
+
+      `;
+    });
+}
+
+//side menu stuff
+const openMenuBtn =
+  document.getElementById("openMenuBtn");
+
+const sideMenu =
+  document.getElementById("sideMenu");
+
+const overlay =
+  document.getElementById("overlay");
+  
+  const leaderboardLoading =
+  document.getElementById("leaderboardLoading");
+
+// TOGGLE MENU
+
+openMenuBtn.addEventListener("click", () => {
+
+  sideMenu.classList.toggle("open");
+
+  overlay.classList.toggle("open");
+
+  if (sideMenu.classList.contains("open")) {
+    openMenuBtn.textContent = "✖ Close";
+  } else {
+    openMenuBtn.textContent = "☰ Menu";
+  }
+
+});
+
+// CLOSE when clicking overlay
+
+overlay.addEventListener("click", () => {
+
+  sideMenu.classList.remove("open");
+
+  overlay.classList.remove("open");
+
+});
 
 
 
@@ -370,7 +188,67 @@ let words = alphabetList;
     const scoreDisplay = document.getElementById("score");
     const timeDisplay = document.getElementById("time");
     const messageDisplay = document.getElementById("message");
+    
+    
+  // ===== PLAYER NAME =====
 
+let playerName = "";
+
+const playerNameInput =
+  document.getElementById("playerNameInput");
+
+// HIDE GAME UI INITIALLY
+
+document.querySelector(".stats").style.display = "none";
+
+document.querySelector(".word-display").style.display = "none";
+
+document.querySelector(".buttons").style.display = "none";
+
+document.querySelector(".message").style.display = "none";
+
+document.querySelector(".mode-select").style.display = "none";
+
+wordInput.style.display = "none";
+
+// ===== CONFIRM NAME =====
+
+playerNameInput.addEventListener("keydown", (e) => {
+
+  // ENTER
+  if (e.key === "Enter") {
+
+    e.preventDefault();
+
+    const name =
+      playerNameInput.value.trim();
+
+    if (name === "") return;
+
+    playerName = name;
+
+    // HIDE NAME SCREEN
+
+    document
+      .getElementById("nameScreen")
+      .style.display = "none";
+
+    // SHOW GAME UI
+
+document.querySelector(".stats").style.display = "flex";
+
+document.querySelector(".word-display").style.display = "block";
+
+document.querySelector(".buttons").style.display = "flex";
+
+document.querySelector(".message").style.display = "block";
+
+document.querySelector(".mode-select").style.display = "flex";
+
+    return;
+  }
+
+});
     function getRandomWord() {
       return words[Math.floor(Math.random() * words.length)];
     }
@@ -417,7 +295,7 @@ function startGame() {
 
   gameStarted = true;
   score = 0;
-  time = 5;
+  time = 60;
 
   scoreDisplay.textContent = score;
   timeDisplay.textContent = time;
@@ -644,8 +522,7 @@ async function loadWordsFromSheet() {
 
 //send score to sheets
 	async function sendScore() {
-    	const playerName = "Anonymous";
-        
+       
         const data = {
         	name: playerName,
             score: score,
@@ -654,12 +531,14 @@ async function loadWordsFromSheet() {
             
         try {
         	await fetch(
-            	"https://script.google.com/macros/s/AKfycbwYfd1wcpn-JRWpKAI5lbuEv2-vxD2BwJN7QMmmKoP_ck39JAMR-TAVRRr71cXHT-Wv/exec",
+            	"https://script.google.com/macros/s/AKfycbwTa-7MuVnFKmASaodSoOFNyi65bgLkZnbCGkAeeZ20wYj0q8tRPbGq7IGUgt7YtyCB/exec",
                 {
                   method: "POST",
                   body: JSON.stringify(data)
                 }
              );
+             
+             fetchLeaderboard();
              
          console.log("Score sent!", playerName, score, currentMode)
          
@@ -676,7 +555,7 @@ async function getScores() {
   try {
 
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbwYfd1wcpn-JRWpKAI5lbuEv2-vxD2BwJN7QMmmKoP_ck39JAMR-TAVRRr71cXHT-Wv/exec"
+      "https://script.google.com/macros/s/AKfycbwTa-7MuVnFKmASaodSoOFNyi65bgLkZnbCGkAeeZ20wYj0q8tRPbGq7IGUgt7YtyCB/exec"
     );
 
     const scores =
@@ -693,9 +572,54 @@ async function getScores() {
   }
 }
 
-getScores()
-loadWordsFromSheet()
+// ===== FETCH LEADERBOARD =====
 
-</script>
-</body>
-</html>
+async function fetchLeaderboard() {
+
+ // SHOW LOADER
+  leaderboardLoading.style.display = "block";
+
+  // HIDE SCORES
+  leaderboardList.style.display = "none";
+
+
+  try {
+
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbwTa-7MuVnFKmASaodSoOFNyi65bgLkZnbCGkAeeZ20wYj0q8tRPbGq7IGUgt7YtyCB/exec"
+    );
+
+    allScores = await response.json();
+
+    updateLeaderboard();
+
+  } catch (error) {
+
+    console.error(
+      "Leaderboard Fetch Error:",
+      error
+    );
+  }
+  finally {
+
+    // HIDE LOADER
+    leaderboardLoading.style.display = "none";
+
+    // SHOW SCORES
+    leaderboardList.style.display = "block";
+  }
+}
+
+function updateLeaderboard() {
+
+  const filtered =
+    allScores.filter(player =>
+      player.mode === leaderboardMode
+    );
+
+  displayLeaderboard(filtered);
+}
+
+
+loadWordsFromSheet();
+fetchLeaderboard();
