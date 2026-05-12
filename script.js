@@ -331,28 +331,11 @@ const alphabetList = [
   "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"
 ];
 
-const API_KEY = "AIzaSyCKfDIE_jC3aCF80gPR-rHFZRjVnBf7e6k";
-const wordList_SHEET_ID = "1gBVLfq1UBuA9OhG3devzZcyUiH4kNg-xlKt0mvMru6A";
-const wordList_RANGE = "words!A2:A";
+
 
 let wordList = [];
 
-async function loadWordsFromSheet() {
-  const url =
-    `https://sheets.googleapis.com/v4/spreadsheets/${wordList_SHEET_ID}/values/${wordList_RANGE}?key=${API_KEY}`;
 
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-
-    wordList = data.values.map(row => row[0]);
-
-    console.log("Loaded words:", wordList);
-
-  } catch (error) {
-    console.error("Error loading words:", error);
-  }
-}
 
 function setMode(mode) {
   currentMode = mode;
@@ -471,7 +454,9 @@ function forceEndGame() {
 function endGame() {
   clearInterval(timer);
   gameStarted = false;
-  sendScore();
+  if (score !== 0){
+  		sendScore();
+        }
 
   messageDisplay.textContent = `🏆 Game Over! Final Score: ${score}`;
   wordDisplay.textContent = `🏆 Game Over! Final Score: ${score}`;
@@ -628,6 +613,31 @@ function setMode(mode) {
     document.querySelectorAll(".mode-btn")[0].classList.add("active");
   } else {
     document.querySelectorAll(".mode-btn")[1].classList.add("active");
+  }
+}
+
+
+//api stuff
+const API_KEY = "AIzaSyCKfDIE_jC3aCF80gPR-rHFZRjVnBf7e6k";
+const wordList_SHEET_ID = "1gBVLfq1UBuA9OhG3devzZcyUiH4kNg-xlKt0mvMru6A";
+const wordList_RANGE = "words!A2:A";
+
+
+//get word list from gsheet
+async function loadWordsFromSheet() {
+  const url =
+    `https://sheets.googleapis.com/v4/spreadsheets/${wordList_SHEET_ID}/values/${wordList_RANGE}?key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    wordList = data.values.map(row => row[0]);
+
+    console.log("Loaded words:", wordList);
+
+  } catch (error) {
+    console.error("Error loading words:", error);
   }
 }
 
