@@ -443,6 +443,10 @@ toggleKeyboardBtn.addEventListener("click", () => {
     keyboard.style.display = "none";
     toggleKeyboardBtn.textContent = "⌨️ Show Keyboard";
   }
+
+	setTimeout(() => {
+  wordInput.focus();
+}, 0);
 });
 
 // Highlight pressed key
