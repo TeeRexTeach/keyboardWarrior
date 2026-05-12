@@ -231,6 +231,298 @@ input {
     font-size: 14px;
   }
 }
+
+/* OPEN BUTTON */
+
+#openMenuBtn {
+  position: fixed;
+
+  top: 20px;
+  right: 20px;
+
+  z-index: 1001;
+
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #4A90E2;
+  color: white;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+/* OVERLAY */
+
+#overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.4);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 0.3s;
+
+  z-index: 998;
+}
+
+/* SIDE MENU */
+
+#sideMenu {
+  position: fixed;
+
+  top: 0;
+  right: -350px;
+
+  width: min(90vw, 320px);
+  height: 100vh;
+
+  background: white;
+
+  box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+
+  transition: right 0.3s ease;
+
+  z-index: 999;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+/* OPEN STATE */
+
+#sideMenu.open {
+  right: 0;
+}
+
+#overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* HEADER */
+
+.menu-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+
+/* CONTENT */
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.menu-content button {
+  padding: 14px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #EAF6FF;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+/* FLOATING TROPHY BUTTON */
+
+#leaderboardBtn {
+  position: fixed;
+  
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-left: 10px;
+
+  left: -2px;
+  top: 50%;
+  
+  z-index: 1001;
+  
+  transform: translateY(-50%);
+  padding: 12px 18px;
+
+  width: 40px;
+  height: 65px;
+
+  border: none;
+  border-radius: 0 12px 12px 0;
+
+  background: #FFFFFF;
+  color: white;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+box-shadow: 8px 0 15px rgba(0,0,0,0.15);
+
+
+
+  transition:
+    left 0.3s ease,
+    transform 0.2s ease;
+    
+    
+}
+
+/* MOVE BUTTON WITH PANEL */
+
+#leaderboardBtn.open {
+  left: min(90vw, 350px);
+}
+
+#leaderboardBtn:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+#leaderboardBtn:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+/* OVERLAY */
+
+#leaderboardOverlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.35);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 0.3s;
+
+  z-index: 998;
+}
+
+/* PANEL */
+
+#leaderboardPanel {
+  position: fixed;
+
+  top: 0;
+  left: -400px;
+
+  width: min(90vw, 350px);
+  height: 100vh;
+
+  background: white;
+
+  box-shadow: 5px 0 20px rgba(0,0,0,0.15);
+
+  transition: left 0.3s ease;
+
+  z-index: 999;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+}
+
+/* OPEN STATE */
+
+#leaderboardPanel.open {
+  left: 0;
+}
+
+#leaderboardOverlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* HEADER */
+
+.leaderboard-header {
+  text-align: center;
+
+  margin-bottom: 20px;
+}
+
+.leaderboard-header h2 {
+  color: #4A90E2;
+}
+
+/* MODE TABS */
+
+.leaderboard-tabs {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+.leaderboard-tab {
+  flex: 1;
+
+  padding: 10px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #EAF6FF;
+
+  cursor: pointer;
+
+  font-weight: bold;
+}
+
+.leaderboard-tab.active {
+  background: #4A90E2;
+  color: white;
+}
+
+/* ENTRIES */
+
+.leaderboard-entry {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  background: #F9F9F9;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  margin-bottom: 10px;
+
+  font-size: 18px;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
@@ -322,6 +614,86 @@ input {
       🎉 Great job! Keep going!
     </div>
   </div>
+<!-- OPEN MENU BUTTON -->
+
+<button id="openMenuBtn">
+  ☰ Menu
+</button>
+
+<!-- DARK OVERLAY -->
+
+<div id="overlay"></div>
+
+<!-- SIDE MENU -->
+
+<div id="sideMenu">
+
+  <div class="menu-header">
+
+    <h2>Menu</h2>
+
+
+  </div>
+
+  <div class="menu-content">
+
+    <button>Settings</button>
+
+    <button>Scores</button>
+
+    <button>Help</button>
+
+  </div>
+
+</div>
+
+<!-- FLOATING TROPHY BUTTON -->
+
+<button id="leaderboardBtn">
+  <span class="trophy-icon">🏆</span>
+</button>
+
+<!-- OVERLAY -->
+
+<div id="leaderboardOverlay"></div>
+
+<!-- LEADERBOARD PANEL -->
+
+<div id="leaderboardPanel">
+
+  <div class="leaderboard-header">
+
+    <h2>🏆 Leaderboard</h2>
+
+  </div>
+
+  <!-- MODE TABS -->
+
+  <div class="leaderboard-tabs">
+
+    <button
+      class="leaderboard-tab active"
+      onclick="switchLeaderboardMode('alphabet')"
+    >
+      🔤 Alphabets
+    </button>
+
+    <button
+      class="leaderboard-tab"
+      onclick="switchLeaderboardMode('words')"
+    >
+      📖 Words
+    </button>
+
+  </div>
+
+  <!-- SCORES -->
+
+  <div id="leaderboardList"></div>
+
+</div>
+
+</body>
 
   <script>
   const correctSound = new Audio(
@@ -330,6 +702,147 @@ input {
 const alphabetList = [
   "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"
 ];
+let allScores = [];
+
+
+// leadearboard stuff
+
+const leaderboardBtn =
+  document.getElementById("leaderboardBtn");
+
+const leaderboardPanel =
+  document.getElementById("leaderboardPanel");
+
+const leaderboardOverlay =
+  document.getElementById("leaderboardOverlay");
+
+const leaderboardList =
+  document.getElementById("leaderboardList");
+
+// ===== CURRENT MODE =====
+
+let leaderboardMode = "alphabet";
+
+// ===== TOGGLE PANEL =====
+
+leaderboardBtn.addEventListener("click", () => {
+
+  leaderboardPanel.classList.toggle("open");
+
+  leaderboardOverlay.classList.toggle("open");
+
+  leaderboardBtn.classList.toggle("open");
+
+  fetchLeaderboard();
+
+});
+
+// ===== CLOSE =====
+
+
+leaderboardOverlay.addEventListener("click", () => {
+
+  leaderboardPanel.classList.remove("open");
+
+  leaderboardOverlay.classList.remove("open");
+
+  leaderboardBtn.classList.remove("open");
+
+});
+
+// ===== SWITCH MODE =====
+
+function switchLeaderboardMode(mode) {
+
+  leaderboardMode = mode;
+
+  document
+    .querySelectorAll(".leaderboard-tab")
+    .forEach(tab => {
+      tab.classList.remove("active");
+    });
+
+  if (mode === "alphabet") {
+
+    document
+      .querySelectorAll(".leaderboard-tab")[0]
+      .classList.add("active");
+
+  } else {
+
+    document
+      .querySelectorAll(".leaderboard-tab")[1]
+      .classList.add("active");
+  }
+
+  fetchLeaderboard();
+}
+
+// ===== DISPLAY =====
+
+// UPDATE displayLeaderboard()
+
+function displayLeaderboard(players) {
+
+  leaderboardList.innerHTML = "";
+
+  players
+    .slice(0, 10)
+    .forEach((player, index) => {
+
+      leaderboardList.innerHTML += `
+
+        <div class="leaderboard-entry">
+
+          <span>
+            ${index + 1}. ${player.name}
+          </span>
+
+          <span>
+            ⭐ ${player.score}
+          </span>
+
+        </div>
+
+      `;
+    });
+}
+
+//side menu stuff
+const openMenuBtn =
+  document.getElementById("openMenuBtn");
+
+const sideMenu =
+  document.getElementById("sideMenu");
+
+const overlay =
+  document.getElementById("overlay");
+
+// TOGGLE MENU
+
+openMenuBtn.addEventListener("click", () => {
+
+  sideMenu.classList.toggle("open");
+
+  overlay.classList.toggle("open");
+
+  if (sideMenu.classList.contains("open")) {
+    openMenuBtn.textContent = "✖ Close";
+  } else {
+    openMenuBtn.textContent = "☰ Menu";
+  }
+
+});
+
+// CLOSE when clicking overlay
+
+overlay.addEventListener("click", () => {
+
+  sideMenu.classList.remove("open");
+
+  overlay.classList.remove("open");
+
+});
 
 
 
@@ -661,6 +1174,8 @@ async function loadWordsFromSheet() {
                 }
              );
              
+             fetchLeaderboard();
+             
          console.log("Score sent!", playerName, score, currentMode)
          
          } catch (error) {
@@ -693,8 +1208,42 @@ async function getScores() {
   }
 }
 
-getScores()
-loadWordsFromSheet()
+// ===== FETCH LEADERBOARD =====
+
+async function fetchLeaderboard() {
+
+  try {
+
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbwYfd1wcpn-JRWpKAI5lbuEv2-vxD2BwJN7QMmmKoP_ck39JAMR-TAVRRr71cXHT-Wv/exec"
+    );
+
+    allScores = await response.json();
+
+    updateLeaderboard();
+
+  } catch (error) {
+
+    console.error(
+      "Leaderboard Fetch Error:",
+      error
+    );
+  }
+}
+
+function updateLeaderboard() {
+
+  const filtered =
+    allScores.filter(player =>
+      player.mode === leaderboardMode
+    );
+
+  displayLeaderboard(filtered);
+}
+
+
+loadWordsFromSheet();
+fetchLeaderboard();
 
 </script>
 </body>
