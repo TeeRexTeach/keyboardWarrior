@@ -1,20 +1,378 @@
-const correctSound = new Audio(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Rush</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+      background: #EAF6FF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+.game-container {
+  background: white;
+  width: min(90vw, 700px);
+  padding: clamp(20px, 4vw, 40px);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+    h1 {
+      margin-top: 0;
+      color: #4A90E2;
+      font-size: 36px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      background: #FFF8DC;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .word-display {
+  background: #F9F9F9;
+  border: 3px dashed #A0D8EF;
+  border-radius: 20px;
+  padding: 20px 10px;
+  font-size: clamp(20px, 6vw, 64px);
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+input {
+  display: block;              /* makes centering work properly */
+  margin: 0 auto 20px auto;    /* centers horizontally */
+  width: min(90%, 500px);
+
+  padding: 15px;
+  font-size: clamp(16px, 2vw, 24px);
+
+  border: 2px solid #A0D8EF;
+  border-radius: 15px;
+  outline: none;
+
+  text-align: center;          /* text inside also centered */
+  box-sizing: border-box;
+}
+
+    input:focus {
+      border-color: #4A90E2;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+   button {
+  padding: clamp(10px, 2vw, 18px) clamp(20px, 4vw, 36px);
+  font-size: clamp(14px, 2vw, 20px);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+    .start-btn {
+      background: #7ED957;
+      color: white;
+    }
+
+    .restart-btn {
+      background: #FFB347;
+      color: white;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .message {
+      min-height: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #4A90E2;
+    }
+    
+    .keyboard-toggle {
+  margin-bottom: 15px;
+}
+
+.toggle-btn {
+  background: #4A90E2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.05);
+}
+.keyboard {
+  display: none;
+  margin-bottom: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 10px);
+  margin-bottom: 8px;
+  flex-wrap: nowrap;
+}
+
+.key {
+  width: clamp(32px, 5vw, 55px);
+  height: clamp(32px, 5vw, 55px);
+  min-width: 32px;
+  min-height: 32px;
+  background: #f0f0f0;
+  border: 2px solid #A0D8EF;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: clamp(14px, 2vw, 20px);
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+
+.key.active {
+  background: #4A90E2;
+  color: white;
+  transform: scale(1.08);
+}
+
+.key.wrong {
+  background: #FF6B6B;
+  color: white;
+  transform: scale(1.08);
+}
+
+.mode-select {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.mode-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #ddd;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.mode-btn.active {
+  background: #4A90E2;
+  color: white;
+  
+  .end-btn {
+  background: #FF6B6B;
+  color: white;
+}
+}
+
+.correct-letter {
+  color: #4A90E2;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .stats {
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .keyboard-row {
+    gap: 4px;
+  }
+
+  .key {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <div class="game-container">
+    <h1>🌈 Word Rush 🌈</h1>
+    <p class="subtitle">Type the word as fast as you can!</p>
+
+    <div class="stats">
+      <div>⭐ Score: <span id="score">0</span></div>
+      <div>⏰ Time: <span id="time">60</span>s</div>
+    </div>
+
+    <div class="word-display" id="wordDisplay">
+      Ready?
+    </div>
+
+    <input
+      type="text"
+      id="wordInput"
+      placeholder="Type the word here..."
+      autocomplete="off"
+      spellcheck="false"
+      autocorrect="off"
+      inputmode="latin"
+      style="ime-mode: disabled; display: none"
+    >
+    <div class="keyboard-toggle">
+  <button id="toggleKeyboardBtn" class="toggle-btn">
+    ⌨️ Show Keyboard
+  </button>
+</div>
+
+<div class="keyboard" id="keyboard">
+  <div class="keyboard-row">
+    <div class="key" data-key="q">Q</div>
+    <div class="key" data-key="w">W</div>
+    <div class="key" data-key="e">E</div>
+    <div class="key" data-key="r">R</div>
+    <div class="key" data-key="t">T</div>
+    <div class="key" data-key="y">Y</div>
+    <div class="key" data-key="u">U</div>
+    <div class="key" data-key="i">I</div>
+    <div class="key" data-key="o">O</div>
+    <div class="key" data-key="p">P</div>
+  </div>
+
+  <div class="keyboard-row">
+    <div class="key" data-key="a">A</div>
+    <div class="key" data-key="s">S</div>
+    <div class="key" data-key="d">D</div>
+    <div class="key" data-key="f">F</div>
+    <div class="key" data-key="g">G</div>
+    <div class="key" data-key="h">H</div>
+    <div class="key" data-key="j">J</div>
+    <div class="key" data-key="k">K</div>
+    <div class="key" data-key="l">L</div>
+  </div>
+
+  <div class="keyboard-row">
+    <div class="key" data-key="z">Z</div>
+    <div class="key" data-key="x">X</div>
+    <div class="key" data-key="c">C</div>
+    <div class="key" data-key="v">V</div>
+    <div class="key" data-key="b">B</div>
+    <div class="key" data-key="n">N</div>
+    <div class="key" data-key="m">M</div>
+  </div>
+</div>
+
+<div class="mode-select">
+  <button class="mode-btn active" onclick="setMode('alphabet')">🔤 Alphabets</button>
+  <button class="mode-btn" onclick="setMode('words')">📖 Words</button>
+</div>
+
+<div class="buttons">
+  <button class="start-btn" onclick="startGame()">🟢 Start Game</button>
+
+  <button
+    class="end-btn"
+    onclick="forceEndGame()"
+    style="display: none;"
+  >
+    🛑 End Game
+  </button>
+</div>
+
+    <div class="message" id="message">
+      🎉 Great job! Keep going!
+    </div>
+  </div>
+
+  <script>
+  const correctSound = new Audio(
   "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
 );
 const alphabetList = [
   "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"
 ];
 
-const wordList = [
-  "apple",
-  "banana",
-  "school",
-  "teacher",
-  "computer",
-  "holiday",
-  "beautiful",
-  "friend"
-];
+const API_KEY = "AIzaSyCKfDIE_jC3aCF80gPR-rHFZRjVnBf7e6k";
+const wordList_SHEET_ID = "1gBVLfq1UBuA9OhG3devzZcyUiH4kNg-xlKt0mvMru6A";
+const wordList_RANGE = "words!A2:A";
+
+let wordList = [];
+
+async function loadWordsFromSheet() {
+  const url =
+    `https://sheets.googleapis.com/v4/spreadsheets/${wordList_SHEET_ID}/values/${wordList_RANGE}?key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    wordList = data.values.map(row => row[0]);
+
+    console.log("Loaded words:", wordList);
+
+  } catch (error) {
+    console.error("Error loading words:", error);
+  }
+}
+
+function setMode(mode) {
+  currentMode = mode;
+
+  if (mode === "alphabet") {
+    words = alphabetList;
+  } else {
+    words = wordList;
+  }
+
+  document.querySelectorAll(".mode-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  if (mode === "alphabet") {
+    document.querySelectorAll(".mode-btn")[0].classList.add("active");
+  } else {
+    document.querySelectorAll(".mode-btn")[1].classList.add("active");
+  }
+}
 
 let currentMode = "alphabet";
 let words = alphabetList;
@@ -58,12 +416,25 @@ function updateWordDisplay() {
   wordDisplay.innerHTML = displayHTML;
 }
 
+// Prevent Japanese IME composition
+wordInput.addEventListener("compositionstart", (e) => {
+  e.preventDefault();
+});
+
+wordInput.addEventListener("compositionupdate", (e) => {
+  e.preventDefault();
+});
+
+wordInput.addEventListener("compositionend", (e) => {
+  wordInput.value = "";
+});
+
 function startGame() {
   if (gameStarted) return;
 
   gameStarted = true;
   score = 0;
-  time = 60;
+  time = 5;
 
   scoreDisplay.textContent = score;
   timeDisplay.textContent = time;
@@ -100,6 +471,7 @@ function forceEndGame() {
 function endGame() {
   clearInterval(timer);
   gameStarted = false;
+  sendScore();
 
   messageDisplay.textContent = `🏆 Game Over! Final Score: ${score}`;
   wordDisplay.textContent = `🏆 Game Over! Final Score: ${score}`;
@@ -152,6 +524,11 @@ if (e.key.length === 1) {
   ];
 
   if (allowedKeys.includes(e.key)) return;
+  
+  if (!/^[a-zA-Z]$/.test(e.key)) {
+  e.preventDefault();
+  return;
+}
 
   // Only check normal letter keys
   if (e.key.length === 1) {
@@ -253,3 +630,38 @@ function setMode(mode) {
     document.querySelectorAll(".mode-btn")[1].classList.add("active");
   }
 }
+
+
+//send score to sheets
+	async function sendScore() {
+    	const playerName = "Anonymous";
+        
+        const data = {
+        	name: playerName,
+            score: score,
+            mode: currentMode
+        };
+            
+        try {
+        	await fetch(
+            	"https://script.google.com/macros/s/AKfycbyioa-gtihFmtkdJ0Y5X3FKTdEEWuTdX_p2bMY4E1Z7LveU5a9VAcCQrjlfn_TsCtmz/exec",
+                {
+                  method: "POST",
+                  body: JSON.stringify(data)
+                }
+             );
+             
+         console.log("Score sent!", playerName, score, currentMode)
+         
+         } catch (error) {
+         	console.error("Error sending score:", error);
+            }
+        
+}
+
+
+loadWordsFromSheet()
+
+</script>
+</body>
+</html>
