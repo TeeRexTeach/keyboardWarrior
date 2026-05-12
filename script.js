@@ -200,15 +200,11 @@ const playerNameInput =
 // HIDE GAME UI INITIALLY
 
 document.querySelector(".stats").style.display = "none";
-
 document.querySelector(".word-display").style.display = "none";
-
+document.querySelector(".toggle-btn").style.display = "none";
 document.querySelector(".buttons").style.display = "none";
-
 document.querySelector(".message").style.display = "none";
-
 document.querySelector(".mode-select").style.display = "none";
-
 wordInput.style.display = "none";
 
 // ===== CONFIRM NAME =====
@@ -236,13 +232,10 @@ playerNameInput.addEventListener("keydown", (e) => {
     // SHOW GAME UI
 
 document.querySelector(".stats").style.display = "flex";
-
 document.querySelector(".word-display").style.display = "block";
-
+document.querySelector(".toggle-btn").style.display = "inline-block";
 document.querySelector(".buttons").style.display = "flex";
-
 document.querySelector(".message").style.display = "block";
-
 document.querySelector(".mode-select").style.display = "flex";
 
     return;
