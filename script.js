@@ -376,7 +376,9 @@ if (e.key.length === 1) {
     "Shift",
     "Control",
     "Alt",
-    "Enter"
+    "Enter",
+	"Process",
+  	"Unidentified"
   ];
 
   if (allowedKeys.includes(e.key)) return;
