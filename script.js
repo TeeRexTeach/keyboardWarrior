@@ -271,12 +271,17 @@ function updateWordDisplay() {
 }
 
 // Prevent Japanese IME composition
-wordInput.addEventListener("input", () => {
+// wordInput.addEventListener("compositionstart", (e) => {
+//   e.preventDefault();
+// });
 
-  wordInput.value =
-    wordInput.value.replace(/[^a-zA-Z]/g, "");
+// wordInput.addEventListener("compositionupdate", (e) => {
+//   e.preventDefault();
+// });
 
-});
+// wordInput.addEventListener("compositionend", (e) => {
+//   wordInput.value = "";
+// });
 
 function startGame() {
   if (gameStarted) return;
