@@ -366,27 +366,27 @@ if (e.key.length === 1) {
 }
   if (!gameStarted) return;
 
-  // Allow special keys
-  const allowedKeys = [
-    "Backspace",
-    "Delete",
-    "ArrowLeft",
-    "ArrowRight",
-    "Tab",
-    "Shift",
-    "Control",
-    "Alt",
-    "Enter",
-	"Process",
-  	"Unidentified"
-  ];
+//   // Allow special keys
+//   const allowedKeys = [
+//     "Backspace",
+//     "Delete",
+//     "ArrowLeft",
+//     "ArrowRight",
+//     "Tab",
+//     "Shift",
+//     "Control",
+//     "Alt",
+//     "Enter",
+// 	"Process",
+//   	"Unidentified"
+//   ];
 
-  if (allowedKeys.includes(e.key)) return;
+//   if (allowedKeys.includes(e.key)) return;
   
-  if (!/^[a-zA-Z]$/.test(e.key)) {
-  e.preventDefault();
-  return;
-}
+//   if (!/^[a-zA-Z]$/.test(e.key)) {
+//   e.preventDefault();
+//   return;
+// }
 
   // Only check normal letter keys
   if (e.key.length === 1) {
