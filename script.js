@@ -617,6 +617,30 @@ function updateLeaderboard() {
   displayLeaderboard(filtered);
 }
 
+document.addEventListener("click", (e) => {
 
+  // only during game
+  if (!gameStarted) return;
+
+  // ignore clicks on input itself
+  if (e.target === wordInput) return;
+
+  // ignore buttons/menu interactions
+  if (
+    e.target.closest("button") ||
+    e.target.closest("#leaderboardPanel") ||
+    e.target.closest("#sideMenu")
+  ) {
+    return;
+  }
+
+  // refocus input
+  setTimeout(() => {
+    wordInput.focus();
+  }, 0);
+
+});
+
+playerNameInput.focus();
 loadWordsFromSheet();
 fetchLeaderboard();
